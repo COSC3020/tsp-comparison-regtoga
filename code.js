@@ -54,24 +54,22 @@ function test_approaches(){
     results = [];
     var timetaken_ls = 0;
     var timetaken_karp = 0;
+    var karp_averagee = [];
+    var ls_averagee = [];
     var size = 1;
     var hour = 3600; //3600 seconds
 
     while (timetaken_ls < hour || timetaken_karp < hour){
         var matricies = generate_adjmatrixs(size, 1);
-        var ls_average = 0;
-        var karp_average = 0;
         console.log("");
         console.log("size = " + size);
 
         if (timetaken_ls <= hour){
-            for (var i = 0; i < matricies.length; i * i){
+            for (var i = 0; i < matricies.length; i++){
                 ls_averagee = test_ls(matricies[i]);
-                ls_average += ls_averagee[0];
             }
-            ls_average = ls_average/matricies.length;
-            timetaken_ls = ls_average;
-            console.log("ls took: " + ls_average + " seconds");
+            timetaken_ls = ls_averagee[0];
+            console.log("ls took: " + ls_averagee[0] + " seconds");
         }else{
             ls_averagee = [0.00,0];
         }
@@ -79,16 +77,18 @@ function test_approaches(){
         if (timetaken_karp <= hour){
             for (var i = 0; i < matricies.length; i++){
                 karp_averagee = test_karp(matricies[i]);
-                karp_average += karp_averagee[0]
             }
-            karp_average = karp_average/matricies.length;
-            timetaken_karp = karp_average;
-            console.log("karp took: " + karp_average + " seconds");
+            timetaken_karp = karp_averagee[0];
+            console.log("karp took: " + karp_averagee[0] + " seconds");
         }else{
             karp_averagee = [0.00,0];
         }
 
-        size++;
+        if (size >= 100){
+            size = 100+size;
+        }else{
+            size++;
+        }
         results.push([ls_averagee, karp_averagee]);
     }
 
