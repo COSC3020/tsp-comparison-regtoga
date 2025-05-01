@@ -57,7 +57,7 @@ function test_approaches(){
     var karp_averagee = [];
     var ls_averagee = [];
     var size = 1;
-    var hour = 3600; //3600 seconds
+    var hour = 36; //3600 seconds
 
     while (timetaken_ls < hour || timetaken_karp < hour){
         var matricies = generate_adjmatrixs(size, 1);
@@ -74,7 +74,7 @@ function test_approaches(){
             ls_averagee = [0.00,0];
         }
 
-        if (timetaken_karp <= hour){
+        if (timetaken_karp <= hour && size < 20){
             for (var i = 0; i < matricies.length; i++){
                 karp_averagee = test_karp(matricies[i]);
             }
@@ -165,6 +165,7 @@ function tsp_hk(distance_matrix) {
 
 function heldKarp(cities, start, distance_matrix, memo){
     var key = cities.sort() + " divider " + start;
+    
     if (memo[key] != undefined) {
         return memo[key];
     }
@@ -214,9 +215,7 @@ function tsp_ls(distance_matrix) {
     //current best route
     cbr = og_route;
 
-    var getting_better_counter = 0;
-    while (getting_better_counter < 200){
-        
+    for (var h = 0; h < og_route.length; h++){
         for (var i = 0; i < og_route.length - 1; i++) {
             for (var j = i + 1; j < og_route.length; j++) {
                 og_route = two_opt_swap(og_route, i, j);
@@ -226,11 +225,9 @@ function tsp_ls(distance_matrix) {
                 if (time_of_route < cbt) {
                     cbt = time_of_route;
                     cbr = og_route;
-                    getting_better_counter = 0;
                 }
             }
         }
-        getting_better_counter += 1;
     }
     return cbt;
 }
@@ -257,16 +254,6 @@ function route_time(og_route, distance_matrix){
     return time;
 }
 
-
-//2optSwap(og_route, i, k)
-//  cities 1 to i-1 stay in the order they are
-//  cities i to k are reversed
-//  cities k + 1 to n stay in the order they are
-
-
-//For example, if I call the above function with og_route A--B--C--D--E--F, $i=2$,
-//$k=4$, the resulting og_route is A--B--E--D--C--F.
-//previous attempt only swaped them and not the whole slice.
 function two_opt_swap(route, i, k) {
     // Create a copy of the route
     var new_route = route.slice();
