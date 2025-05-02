@@ -57,9 +57,15 @@ function test_approaches(){
     var karp_averagee = [];
     var ls_averagee = [];
     var size = 1;
-    var hour = 36; //3600 seconds
+    var hour = 3600; //3600 seconds
 
-    while (timetaken_ls < hour || timetaken_karp < hour){
+    var ls_do_someting = true;
+    var karp_do_someting = true;
+
+    while (ls_do_someting || karp_do_someting){
+        ls_do_someting = false;
+        karp_do_someting = false;
+
         var matricies = generate_adjmatrixs(size, 1);
         console.log("");
         console.log("size = " + size);
@@ -70,8 +76,10 @@ function test_approaches(){
             }
             timetaken_ls = ls_averagee[0];
             console.log("ls took: " + ls_averagee[0] + " seconds");
+            ls_do_someting = true;
+            ls_averagee.push(size);
         }else{
-            ls_averagee = [0.00,0];
+            ls_averagee = [0.00,0,size];
         }
 
         if (timetaken_karp <= hour && size < 20){
@@ -80,11 +88,16 @@ function test_approaches(){
             }
             timetaken_karp = karp_averagee[0];
             console.log("karp took: " + karp_averagee[0] + " seconds");
+            karp_do_someting = true;
+            karp_averagee.push(size);
         }else{
-            karp_averagee = [0.00,0];
+            karp_averagee = [0.00,0,size];
         }
 
-        if (size >= 100){
+        if (size >= 50 && size < 100){
+            size = 50+size;
+        }
+        else if (size >= 100){
             size = 100+size;
         }else{
             size++;
