@@ -1,22 +1,24 @@
 import matplotlib.pyplot as plt
-import ast
 
-def parse_times(filepath):
+def parse_file(filepath):
+    input_sizes = []
+    times = []
     with open(filepath, 'r') as file:
-        lines = file.readlines()
-    # Convert lines like "['0.53', 452]" to float time values
-    return [float(ast.literal_eval(line.strip())[0]) for line in lines if line.strip()]
+        for line in file:
+            if line.strip():
+                parts = line.strip().split(',')
+                if len(parts) >= 3:
+                    times.append(float(parts[0]))
+                    input_sizes.append(int(parts[2]))
+    return input_sizes, times
 
-# Load time data from both files
-ls_times = parse_times("C:Outputls.txt")
-karp_times = parse_times("C:Outputkarp.txt")
-
-# Input sizes (line number starting from 1)
-input_sizes = list(range(1, len(ls_times) + 1))
+# Parse both files
+ls_inputs, ls_times = parse_file("C:Outputls.txt")
+karp_inputs, karp_times = parse_file("C:Outputkarp.txt")
 
 # Plot LS Time
 plt.figure(figsize=(10, 6))
-plt.plot(input_sizes, ls_times, label='Local Search Time', color='blue')
+plt.plot(ls_inputs, ls_times, label='Local Search Time', color='blue', marker='o')
 plt.xlabel('Input Size')
 plt.ylabel('Time (seconds)')
 plt.title('Local Search Runtime')
@@ -27,7 +29,7 @@ plt.show()
 
 # Plot Karp Time
 plt.figure(figsize=(10, 6))
-plt.plot(input_sizes, karp_times, label='Held-Karp Time', color='green')
+plt.plot(karp_inputs, karp_times, label='Held-Karp Time', color='green', marker='o')
 plt.xlabel('Input Size')
 plt.ylabel('Time (seconds)')
 plt.title('Held-Karp Runtime')
@@ -38,8 +40,8 @@ plt.show()
 
 # Plot both together
 plt.figure(figsize=(10, 6))
-plt.plot(input_sizes, ls_times, label='Local Search', color='blue')
-plt.plot(input_sizes, karp_times, label='Held-Karp', color='green')
+plt.plot(ls_inputs, ls_times, label='Local Search', color='blue', marker='o')
+plt.plot(karp_inputs, karp_times, label='Held-Karp', color='green', marker='o')
 plt.xlabel('Input Size')
 plt.ylabel('Time (seconds)')
 plt.title('Comparison of Runtimes: Local Search vs Held-Karp')
