@@ -27,7 +27,7 @@ to this markdown file.
 The comparisons between my two algorithms isnt very interesting because the largest inputsize that would ever produce an output on my machine was 19 for the held-karp implementation. I dont know why this is because its not running out of memory its just never producing an output, i let it run for 4 days on my server at home and while it never errored out it never completed either. Doing a quick approximation based on the time that the previous input took it should have taken around 500 seconds to produce an output at input size of 20, that wasnt the case however. i simply dont have enough time let let it run forever and hope that it will produce an output. in my code i just hardlimited it to only accecpt inputs smaller than 20.
 
 This is the graph of the input size and the runtime for both the implementations.
-![alt text](runtime_comparison.png)
+![alt text](comparison_runtime.png)
 
 This is the graph of the input size and the runtime for karp implementation.
 ![karp_runtime](karp_runtime.png)
